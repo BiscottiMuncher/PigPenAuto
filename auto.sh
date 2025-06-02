@@ -13,12 +13,11 @@ cd Snort3Auto/
 echo "Installing Snort"
 chmod +x snortauto.sh
 ./snortauto.sh -t eth0
-cd
+cd ..
 }
 
 getSF(){
 ## Install and configure splunk forwarder
-cd
 # Gets forwarder deb
 wget "$1"
 sfStr=$(ls | grep splunkforward*)
@@ -31,11 +30,11 @@ dpkg -i "$sfStr"
 }
 
 getPP(){
-## Install PigPen
+## Gets pigpen and installs it, Needs snort to be installed beforehand
 git clone https://github.com/BiscottiMuncher/PigPen
 cd PigPen
 python3 -m venv ppenvo
-source PigPen/ppenvo/bin/activate
+source ppenvo/bin/activate
 pip install -r requirements.txt
 python pigpen.py
 }
