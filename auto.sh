@@ -24,7 +24,11 @@ sfStr=$(ls | grep splunkforward*)
 echo "Installing $sfStr"
 dpkg -i "$sfStr"
 # Takes in 4 arguments Splunk IP, Forwarder Port, Username, Password
+/opt/splunkforwarder/bin/splunk start --accept-license  --answer-yes --enable-boot-start # --add-forward-server $2:$3 --auth $4:$5
 /opt/splunkforwarder/bin/splunk start --accept-license --add-forward-server $2:$3 --auth $4:$5 --answer-yes --enable-boot-start
+
+
+
 # Adds monitor to /var/log/snort for monitoring of all logs
 /opt/splunkforwarder/bin/splunk add monitor /var/log/snort
 }
@@ -39,8 +43,19 @@ pip install -r requirements.txt
 python pigpen.py
 }
 
+startLastConf(){
+
+cd ~/PigPenAuto/PigPen
+source ppenvo/bin/activate
+python pigpen.py
+echo Started Pigpen
+
+}
+
 if [ -z "$1" ]; then
         echo "Enter Forwarder link, Splunk Server IP, Forwarder Port, Splunk Username, Splunk Password"
+elif [ $1 ==  "-s" ]; then
+        startLastConf
 else
         echo "Installing With $1 $2 $3 $4 $5"
         preIn
